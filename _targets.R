@@ -3,7 +3,7 @@ library(tarchetypes)
 library(stantargets)
 
 tar_option_set(
-  packages = c("tidyverse", "dkstat", "geodk", "lubridate", "tidylog"),
+  packages = c("tidyverse", "dkstat", "geodk", "lubridate", "httr2"),
   format = "qs",
   seed = 42,
   controller = crew::crew_controller_local(workers = 4, seconds_idle = 60)
@@ -24,6 +24,8 @@ list(
   tar_target(mcp_accounts, get_mcp_accounts(today_date)),
   tar_target(mcp_daycare_pricing, get_mcp_daycare_pricing(today_date)),
   tar_target(turnout_pct, get_turnout_pct(today_date)),
+  tar_target(epinion_poll_list, get_epinion_poll_list()),
+  tar_target(epinion_polls, get_epinion_poll(epinion_poll_list)),
   tar_stan_mcmc(
     example,
     "x.stan",

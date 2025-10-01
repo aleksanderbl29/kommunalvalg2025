@@ -13,9 +13,9 @@ mcp_accounts|stem|3768ac08534e1815|dea93530f0769dae|eb2a2d0a047504bd|-1526997116
 example_data|stem|dfdce5183ca469eb|1f83d9fba041efe4|6c0eeaf793dc3c0c|1735917870||t20360.4660502895s|s285b|285|qs|local|vector|||0.565||
 mcp_pop|stem|50ce828b67d1204f|39aea1f47fd8a978|8a833d9b31fe5f6e|1604351238||t20360.4864728157s|s1456728b|1456728|qs|local|vector|||1062.409||
 get_mcp_geo|function|89124d71a16b23e3
-get_epinion_poll|function|9c382daf6b9d4b4b
-get_epinion_poll_list|function|298c213d6e532b5d
-.Random.seed|object|54a0e87555d824fa
+get_epinion_poll|function|1f7878c1651e2c2b
+get_epinion_poll_list|function|952cbbaa15717800
+.Random.seed|object|409d8b3d7f7cfae9
 get_turnout_pct|function|388c71a2208549f0
 bulk_get_dst_table|function|3a71b700973a5f0a
 dst_areas_filter|object|3ca180c6b7318285
@@ -24,3 +24,5 @@ get_hist_results|function|f4b2048d93b0f4a8
 generate_data|function|dd76fd0ab7b37ebc
 get_mcp_pop|function|9036a29bfbecd8eb
 get_mcp_accounts|function|4113c7d6e9bfab85
+epinion_poll_list|stem|e1dcf581f2544813|f371d7a6a509df55|4f365b6846b9b0da|1731377734||t20362.2467748022s|s3673b|3673|qs|local|vector|||1.11||
+epinion_polls|stem|31f17a06a5cb5ed5|29cc0c521d715949|7af86dcb95dded12|1145696792||t20362.2473746933s|s42860b|42860|qs|local|vector|||51.74||
