@@ -1,9 +1,10 @@
 library(targets)
 library(tarchetypes)
 library(stantargets)
+library(glue)
 
 tar_option_set(
-  packages = c("tidyverse", "dkstat", "geodk", "lubridate", "tidylog"),
+  packages = c("tidyverse", "glue", "dkstat", "geodk", "lubridate", "pdftools"),
   format = "qs",
   seed = 42,
   controller = crew::crew_controller_local(workers = 4, seconds_idle = 60)
@@ -24,6 +25,9 @@ list(
   tar_target(mcp_accounts, get_mcp_accounts(today_date)),
   tar_target(mcp_daycare_pricing, get_mcp_daycare_pricing(today_date)),
   tar_target(turnout_pct, get_turnout_pct(today_date)),
+  tar_download(verian_pdf_downloads, verian_poll_urls, path = glue("data/verian/{basename(verian_poll_urls)}")),
+  tar_files(verian_pdf_paths, verian_pdf_downloads),
+  tar_target(verian, get_verian_polls_from_pdf(verian_pdf_paths), pattern = map(verian_pdf_paths)),
   tar_stan_mcmc(
     example,
     "x.stan",
