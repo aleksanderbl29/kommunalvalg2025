@@ -1,9 +1,10 @@
 library(targets)
 library(tarchetypes)
 library(stantargets)
+library(glue)
 
 tar_option_set(
-  packages = c("tidyverse", "dkstat", "geodk", "lubridate", "httr2"),
+  packages = c("tidyverse", "glue", "dkstat", "geodk", "lubridate", "httr2"),
   format = "qs",
   seed = 42,
   controller = crew::crew_controller_local(workers = 4, seconds_idle = 60)
@@ -26,6 +27,9 @@ list(
   tar_target(turnout_pct, get_turnout_pct(today_date)),
   tar_target(epinion_poll_list, get_epinion_poll_list()),
   tar_target(epinion_polls, get_epinion_poll(epinion_poll_list)),
+  tar_file_read(verian_polls, "data/verian/PI250604.xls", read_verian_excel(!!.x)),
+  tar_file_read(gallup_polls, "data/verian/Politisk indeks 1953-2023.xlsx", read_gallup_excel(!!.x)),
+  tar_target(polls, dplyr::bind_rows(verian_polls, gallup_polls)),
   tar_stan_mcmc(
     example,
     "x.stan",
