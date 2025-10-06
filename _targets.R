@@ -25,9 +25,9 @@ list(
   tar_target(mcp_accounts, get_mcp_accounts(today_date)),
   tar_target(mcp_daycare_pricing, get_mcp_daycare_pricing(today_date)),
   tar_target(turnout_pct, get_turnout_pct(today_date)),
-  tar_download(verian_pdf_downloads, verian_poll_urls, path = glue("data/verian/{basename(verian_poll_urls)}")),
-  tar_files(verian_pdf_paths, verian_pdf_downloads),
-  tar_target(verian, get_verian_polls_from_pdf(verian_pdf_paths), pattern = map(verian_pdf_paths)),
+  tar_file_read(verian_polls, "data/verian/PI250604.xls", read_verian_excel(!!.x)),
+  tar_file_read(gallup_polls, "data/verian/Politisk indeks 1953-2023.xlsx", read_gallup_excel(!!.x)),
+  tar_target(polls, dplyr::bind_rows(verian_polls, gallup_polls)),
   tar_stan_mcmc(
     example,
     "x.stan",
