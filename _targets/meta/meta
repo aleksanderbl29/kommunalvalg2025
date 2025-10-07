@@ -1,26 +1,28 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 example_file_x|stem|bf2ae9fc7c9a2bc2|459f661641d63f55|2c530c1562a7fbd1|-1612613378|x.stan|t20357.8975404521s|s166b|166|file|local|vector|||0||
-example_data|stem|dfdce5183ca469eb|1f83d9fba041efe4|6c0eeaf793dc3c0c|1735917870||t20364.5930140447s|s285b|285|qs|local|vector|||0.001||
-today_date|stem|8ce29980891836f2|38860832540c09e6|2c530c1562a7fbd1|1449626418||t20364.5930224581s|s109b|109|qs|local|vector|||0.799||
-turnout_pct|stem|cd6af8ecceb165f8|1f4f2e9e1a0e2b4d|e4e9c46f178e9f0e|256816768||t20364.593038787s|s563b|563|qs|local|vector|||1.358||
-mcp_daycare_pricing|stem|6868db0781204969|9cc901baa1773d85|04f85501ed03ebfa|810737003||t20364.5930641847s|s32587b|32587|qs|local|vector|||2.144||
-example_mcmc_x|stem|8d5380ff81ed1075|df79f5adfb9ecdc8|d7013f7818516743|503040828||t20364.593110806s|s176175b|176175|qs|local|vector|||7.397||
-example_diagnostics_x|stem|f502d382a7fcbffb|258b328a8ca50079|afc37d10428d0121|107945452||t20364.5931113217s|s84848b|84848|fst_tbl|local|vector|||0.003||
-example_summary_x|stem|c5e6c8cf8692e64a|a31210bd884260d6|a7c7ef1ca945d42e|-1186125485||t20364.59311249s|s1076b|1076|fst_tbl|local|vector|||0.079||
-custom_summary|stem|fa3554e14f9e6bad|6658248de31a1b53|afc37d10428d0121|1815038699||t20364.5931127488s|s580b|580|fst_tbl|local|vector|||0.004||
-example_draws_x|stem|fb3cabd41e3d224f|93b187c92e26d600|afc37d10428d0121|784365999||t20364.5931129661s|s72076b|72076|fst_tbl|local|vector|||0.002||
-mcp_geo|stem|d9185f417d14793d|45b960e5b73615bf|0d9bc1b825c296ea|-2037433673||t20364.5932039336s|s17079863b|17079863|qs|local|vector|||15.584||
-mcp_accounts|stem|2f01bed14f92e85b|dea93530f0769dae|e482e773c51da78a|-1526997116||t20364.5961282689s|s2728223b|2728223|qs|local|vector|||268.146||
-mcp_pop|stem|50ce828b67d1204f|39aea1f47fd8a978|b4b466aa3198239e|1604351238||t20364.6053372349s|s1456728b|1456728|qs|local|vector|||1060.274||
-verian_polls_file|stem|8ca8f2b1ac61a8a3|0154934785eb7928|2c530c1562a7fbd1|1951830488|data/verian/PI250604.xls|t20364.3715162037s|s46080b|46080|file|local|vector|||0.501||
-gallup_polls_file|stem|638852e07445bed5|4d1d27dc3e38e8c7|2c530c1562a7fbd1|751178575|data/verian/Politisk indeks 1953-2023.xlsx|t20367.2983072611s|s94443b|94443|file|local|vector|||0.498||
-verian_polls|stem|4d32f8885e1eb92b|28e004341c0f05f1|60b273ffc6ff52d7|1867893276||t20367.3241930422s|s1442b|1442|qs|local|vector|||0.177||
-gallup_polls|stem|a7a88a1fb6a55153|ec3b92dd0d4a003a|73a4b85795ebdaa4|-845759171||t20367.3241982878s|s19330b|19330|qs|local|vector|||0.493|There was 1 warning in `mutate()`. ℹ In argument: `date_from_excel_serial = if_else(...)`. Caused by warning in `as.Date()`: ! NAs introduced by coercion|
-polls|stem|fc971cbed3f1268c|669619075acaeed2|eea2bc9f66ba0f43|612560217||t20367.3250223783s|s20176b|20176|qs|local|vector|||0.001||
+gallup_polls_file|stem|638852e07445bed5|4d1d27dc3e38e8c7|2c530c1562a7fbd1|751178575|data/verian/Politisk indeks 1953-2023.xlsx|t20367.2983072611s|s94443b|94443|file|local|vector|||0.514||
+verian_polls_file|stem|8ca8f2b1ac61a8a3|0154934785eb7928|2c530c1562a7fbd1|1951830488|data/verian/PI250604.xls|t20364.3715162037s|s46080b|46080|file|local|vector|||0.584||
+example_data|stem|dfdce5183ca469eb|1f83d9fba041efe4|6c0eeaf793dc3c0c|1735917870||t20367.6070124353s|s285b|285|qs|local|vector|||0||
+today_date|stem|a33027a60a486246|38860832540c09e6|2c530c1562a7fbd1|1449626418||t20367.607015762s|s110b|110|qs|local|vector|||0.533||
+verian_polls|stem|4d32f8885e1eb92b|28e004341c0f05f1|60b273ffc6ff52d7|1867893276||t20367.6070167417s|s1442b|1442|qs|local|vector|||0.206||
+gallup_polls|stem|a7a88a1fb6a55153|ec3b92dd0d4a003a|73a4b85795ebdaa4|-845759171||t20367.6070192789s|s19330b|19330|qs|local|vector|||0.544|There was 1 warning in `mutate()`. ℹ In argument: `date_from_excel_serial = if_else(...)`. Caused by warning in `as.Date()`: ! NAs introduced by coercion|
+polls|stem|fc971cbed3f1268c|669619075acaeed2|eea2bc9f66ba0f43|612560217||t20367.6070194951s|s20176b|20176|qs|local|vector|||0.002||
+turnout_pct|stem|cd6af8ecceb165f8|1f4f2e9e1a0e2b4d|205b97d4b2fc0754|256816768||t20367.6070315539s|s563b|563|qs|local|vector|||1.03||
+example_mcmc_x|stem|6854af820a75486e|df79f5adfb9ecdc8|d7013f7818516743|503040828||t20367.6070330505s|s171572b|171572|qs|local|vector|||1.223||
+example_diagnostics_x|stem|f502d382a7fcbffb|258b328a8ca50079|9e6bc24b1e4f7df0|107945452||t20367.6070333507s|s84848b|84848|fst_tbl|local|vector|||0.002||
+mcp_daycare_pricing|stem|6868db0781204969|9cc901baa1773d85|8926d2ed04fcde6a|810737003||t20367.6070463853s|s32587b|32587|qs|local|vector|||1.109||
+mcp_geo|stem|d9185f417d14793d|45b960e5b73615bf|941aa5f14dc585d2|-2037433673||t20367.6071749649s|s17079863b|17079863|qs|local|vector|||13.638||
+example_summary_x|stem|c5e6c8cf8692e64a|a31210bd884260d6|8904c8346b029c99|-1186125485||t20367.6071780899s|s1076b|1076|fst_tbl|local|vector|||0.077||
+custom_summary|stem|fa3554e14f9e6bad|6658248de31a1b53|9e6bc24b1e4f7df0|1815038699||t20367.6071783496s|s580b|580|fst_tbl|local|vector|||0.005||
+example_draws_x|stem|fb3cabd41e3d224f|93b187c92e26d600|9e6bc24b1e4f7df0|784365999||t20367.6071786325s|s72076b|72076|fst_tbl|local|vector|||0.003||
+mcp_accounts|stem|3768ac08534e1815|dea93530f0769dae|c7d4a73074bf5d02|-1526997116||t20367.610117526s|s2729190b|2729190|qs|local|vector|||266.466||
+mcp_pop|stem|50ce828b67d1204f|39aea1f47fd8a978|c228e13766593e01|1604351238||t20367.6193422329s|s1456728b|1456728|qs|local|vector|||1062.248||
+epinion_polls|stem|b09dc7633acfb3c7|425e33635fceb168|135f9f9309ea5a2a|1145696792||t20368.279063514s|s42107b|42107|qs|local|vector|||66.021||
 get_mcp_geo|function|89124d71a16b23e3
-get_epinion_poll|function|1f7878c1651e2c2b
-get_epinion_poll_list|function|952cbbaa15717800
-.Random.seed|object|409d8b3d7f7cfae9
+get_epinion_polls|function|d0f1d9444152a933
+estimated_verian_gallup_respondents|object|ec08120faca9b709
+.Random.seed|object|c4e59e08ff024356
+epinion_api_url_var|object|0c5ada09edff4fa6
 get_turnout_pct|function|388c71a2208549f0
 bulk_get_dst_table|function|3a71b700973a5f0a
 dst_areas_filter|object|3ca180c6b7318285
@@ -31,5 +33,4 @@ read_verian_excel|function|a9dd560d7a4ee8f5
 read_gallup_excel|function|904fce81099f8dff
 get_mcp_pop|function|9036a29bfbecd8eb
 get_mcp_accounts|function|4113c7d6e9bfab85
-epinion_poll_list|stem|e1dcf581f2544813|f371d7a6a509df55|4f365b6846b9b0da|1731377734||t20362.2467748022s|s3673b|3673|qs|local|vector|||1.11||
-epinion_polls|stem|31f17a06a5cb5ed5|29cc0c521d715949|7af86dcb95dded12|1145696792||t20362.2473746933s|s42860b|42860|qs|local|vector|||51.74||
+epinion_api_url|stem|e37d9a9eb65d30e9|67458d8dc149e80e|895aab4e162a27d2|235035531|https://www.dr.dk/nyheder/politik/meningsmaalinger/api/opinionPollData|t20368.2792657069s||0|url|local|vector|||0.472||
