@@ -11,13 +11,6 @@ tar_option_set(
 )
 tar_source()
 
-generate_data <- function(n = 10) {
-  true_beta <- stats::rnorm(n = 1, mean = 0, sd = 1)
-  x <- seq(from = -1, to = 1, length.out = n)
-  y <- stats::rnorm(n, x * true_beta, 1)
-  list(n = n, x = x, y = y, true_beta = true_beta)
-}
-
 list(
   tar_target(today_date, today("CET")),
   tar_target(mcp_geo, get_mcp_geo(today_date)),
@@ -28,16 +21,7 @@ list(
   tar_file_read(verian_polls, "data/verian/PI250604.xls", read_verian_excel(!!.x)),
   tar_file_read(gallup_polls, "data/verian/Politisk indeks 1953-2023.xlsx", read_gallup_excel(!!.x)),
   tar_target(polls, dplyr::bind_rows(verian_polls, gallup_polls)),
-  tar_stan_mcmc(
-    example,
-    "x.stan",
-    generate_data(),
-    stdout = R.utils::nullfile(),
-    stderr = R.utils::nullfile()
-  ),
-  tar_stan_summary(
-    custom_summary,
-    fit = example_mcmc_x,
-    summaries = list(~posterior::quantile2(.x, probs = c(0.25, 0.75)))
-  )
+
+  # Calculation of prior
+  # tar_target(mcp_deviation, calculate_poll_result_deviation(polls, election_results)),
 )
