@@ -1,3 +1,1 @@
-get_hist_results <- function(date) {
-
-}
+get_hist_results <- function(date) {}
