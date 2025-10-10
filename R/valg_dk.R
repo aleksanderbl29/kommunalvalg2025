@@ -35,10 +35,14 @@ get_kv_data_csv <- function(municipality_id) {
     municipality_id |> pull(id)
   )
 
-  request(url) |>
+  x <- request(url) |>
     req_perform() |>
     resp_body_string() |>
     read_csv2(col_types = cols("c", "c", "c", "c", "d"))
+
+  Sys.sleep(0.5) # Sleep for half a second to not overload API
+
+  return(x)
 }
 # "https://valg.dk/api/export-data/export-kv-data-csv?
 # ElectionId=1705ff7b-7390-48d8-b701-6bcd430dc835

@@ -50,8 +50,9 @@ list(
     read_gallup_excel(!!.x)
   ),
   ## Epinion
-  tar_url(epinion_api_url, epinion_api_url_var),
-  tar_target(epinion_polls, get_epinion_polls(epinion_api_url)),
+  tar_group_by(epinion_poll_list, get_epinion_poll_list(), id),
+  tar_target(epinion, get_epinion_polls(epinion_poll_list), pattern = map(epinion_poll_list)),
+
   ## Merged
   tar_target(polls, dplyr::bind_rows(verian_polls, gallup_polls)) #,
 
