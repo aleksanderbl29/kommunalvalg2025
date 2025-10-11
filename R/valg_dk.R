@@ -61,7 +61,10 @@ get_kv_coalitions <- function(municipality_id) {
     "Cookie" = cookie
   )
 
-  url <- paste0("https://valg.dk/api/detail/municipality/", municipality_id |> pull(id))
+  url <- paste0(
+    "https://valg.dk/api/detail/municipality/",
+    municipality_id |> pull(id)
+  )
 
   response <- request(url) |>
     req_headers(!!!headers) |>
@@ -75,14 +78,5 @@ get_kv_coalitions <- function(municipality_id) {
 
   Sys.sleep(api_sleep_time)
 
-  return(list(municipality_name = response$countStatusDto$name,
-              coalitions = x))
+  return(list(municipality_name = response$countStatusDto$name, coalitions = x))
 }
-
-
-
-
-
-
-
-
