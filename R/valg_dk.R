@@ -38,9 +38,10 @@ get_kv_data_csv <- function(municipality_id) {
   x <- request(url) |>
     req_perform() |>
     resp_body_string() |>
-    read_csv2(col_types = cols("c", "c", "c", "c", "d"))
+    read_csv2(col_types = cols("c", "c", "c", "c", "d")) |>
+    janitor::clean_names()
 
-  Sys.sleep(0.5) # Sleep for half a second to not overload API
+  Sys.sleep(api_sleep_time)
 
   return(x)
 }
