@@ -18,9 +18,10 @@ read_verian_excel <- function(path) {
       value = as.numeric(value),
       poll_date = dmy(poll_date),
       pollster = "Verian",
-      n = estimated_verian_gallup_respondents
+      n = estimated_verian_gallup_respondents,
+      segment = "all"
     ) |>
-    select(party_code, party_name, poll_date, value, pollster, n)
+    select(party_code, party_name, poll_date, value, segment, pollster, n)
 }
 
 read_gallup_excel <- function(path) {
@@ -45,7 +46,8 @@ read_gallup_excel <- function(path) {
       ),
       poll_date = coalesce(date_from_string, date_from_excel_serial),
       pollster = "Verian",
-      n = estimated_verian_gallup_respondents
+      n = estimated_verian_gallup_respondents,
+      segment = "all"
     ) |>
-    select(party_code, party_name, poll_date, value, pollster, n)
+    select(party_code, party_name, poll_date, value, segment, pollster, n)
 }

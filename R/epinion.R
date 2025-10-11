@@ -69,7 +69,7 @@ get_epinion_polls <- function(
     ) |>
     left_join(parties, by = join_by(party_code)) |>
     drop_na() |>
-    select(party_code, party_name, poll_date, value, pollster, n)
+    select(party_code, party_name, poll_date, value, segment, pollster, n)
 
   Sys.sleep(api_sleep_time)
 
