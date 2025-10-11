@@ -46,6 +46,8 @@ list(
     get_kv_data_csv(kv_election_overview),
     pattern = map(kv_election_overview)
   ),
+  tar_target(kv_coalitions, get_kv_coalitions(kv_election_overview),
+             pattern = map(kv_election_overview)),
 
   # Polls
   ## Verian
