@@ -1,18 +1,16 @@
-get_kv_election_overview <- function(
-  base_url = "https://valg.dk/api/overview/kv-election-overview"
-) {
-  cookie <- paste0(
+kv_request_headers <- list(
+  "X-Election-ID" = "1705ff7b-7390-48d8-b701-6bcd430dc835",
+  "Cookie" = paste0(
     "NSC_mc_wt_wbm_qspe=",
     paste0(sample(c(0:9, letters[1:6]), 32, replace = TRUE), collapse = "")
   )
-  headers <- list(
-    "X-Election-ID" = "1705ff7b-7390-48d8-b701-6bcd430dc835",
-    # "Cookie" = "NSC_mc_wt_wbm_qspe=ffffffff090a364345525d5f4f58455e445a4a4229a0"
-    "Cookie" = cookie
-  )
+)
 
+get_kv_election_overview <- function(
+  base_url = "https://valg.dk/api/overview/kv-election-overview"
+) {
   request(base_url) |>
-    req_headers(!!!headers) |>
+    req_headers(!!!kv_request_headers) |>
     req_perform() |>
     resp_body_string() |>
     jsonlite::fromJSON() |>
@@ -49,3 +47,24 @@ get_kv_data_csv <- function(municipality_id) {
 # ElectionId=1705ff7b-7390-48d8-b701-6bcd430dc835
 # &
 # MunicipalityId=613bbb61-4de7-426d-a1a9-e6ffbaf41140"
+
+get_kv_coalitions <- function(municipality_id) {
+  url <- paste0(
+    "https://valg.dk/api/detail/municipality/",
+    municipality_id |> pull(id)
+  )
+
+  response <- request(url) |>
+    req_headers(!!!kv_request_headers) |>
+    req_perform() |>
+    resp_body_string() |>
+    jsonlite::fromJSON()
+
+  x <- response |>
+    _$electoralCoalitionList$listLettersOrName |>
+    str_split(",\\s*")
+
+  Sys.sleep(api_sleep_time)
+
+  return(list(municipality_name = response$countStatusDto$name, coalitions = x))
+}
