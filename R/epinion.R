@@ -20,12 +20,13 @@ get_epinion_polls <- function(
     pull(validFromDate) |>
     as_date()
 
-  description <- request(base_url) |>
+  response <- request(base_url) |>
     req_url_query(id = id) |>
     req_perform() |>
     resp_body_string() |>
-    jsonlite::fromJSON() |>
-    _$description
+    jsonlite::fromJSON()
+
+  description <- response$description
 
   n <- str_extract_all(description, "\\d+\\.\\d{3}|\\b\\d{3}\\b") |>
     _[[1]] |>
@@ -34,12 +35,7 @@ get_epinion_polls <- function(
     tail(n = 1) |>
     as.numeric()
 
-  x <- request(base_url) |>
-    req_url_query(id = id) |>
-    req_perform() |>
-    resp_body_string() |>
-    jsonlite::fromJSON() |>
-    _$surveyDataPoints |>
+  x <- response$surveyDataPoints |>
     as_tibble() |>
     mutate(
       poll_date = poll_date,
