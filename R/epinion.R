@@ -5,7 +5,9 @@ get_epinion_poll_list <- function(
     req_perform() |>
     resp_body_string() |>
     jsonlite::fromJSON() |>
-    filter(!isTRUE(isElection))
+    as_tibble() |>
+    mutate(isElection = as.logical(replace_na(isElection, FALSE))) |>
+    filter(isElection != TRUE)
 }
 
 get_epinion_polls <- function(
