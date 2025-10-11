@@ -1,5 +1,5 @@
 get_epinion_poll_list <- function(
-    base_url = "https://www.dr.dk/nyheder/politik/meningsmaalinger/api/opinionPollData"
+  base_url = "https://www.dr.dk/nyheder/politik/meningsmaalinger/api/opinionPollData"
 ) {
   request(base_url) |>
     req_perform() |>

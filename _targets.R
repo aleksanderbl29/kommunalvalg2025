@@ -6,7 +6,15 @@ library(glue)
 api_sleep_time <- 0.25 # Sleep API calls for some time.
 
 tar_option_set(
-  packages = c("tidyverse", "glue", "dkstat", "geodk", "lubridate", "httr2", "tibble"),
+  packages = c(
+    "tidyverse",
+    "glue",
+    "dkstat",
+    "geodk",
+    "lubridate",
+    "httr2",
+    "tibble"
+  ),
   format = "qs",
   seed = 42,
   controller = crew::crew_controller_local(workers = 4, seconds_idle = 60)
@@ -53,7 +61,11 @@ list(
   ),
   ## Epinion
   tar_group_by(epinion_poll_list, get_epinion_poll_list(), id),
-  tar_target(epinion_polls, get_epinion_polls(epinion_poll_list), pattern = map(epinion_poll_list)),
+  tar_target(
+    epinion_polls,
+    get_epinion_polls(epinion_poll_list),
+    pattern = map(epinion_poll_list)
+  ),
 
   ## Merged
   tar_target(polls, dplyr::bind_rows(verian_polls, gallup_polls, epinion_polls)) #,
