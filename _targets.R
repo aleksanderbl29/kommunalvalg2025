@@ -73,7 +73,7 @@ list(
   ),
 
   ## Merged
-  tar_target(polls, dplyr::bind_rows(verian_polls, gallup_polls, epinion_polls)) #,
+  tar_target(polls, bind_polls(election_dates, verian_polls, gallup_polls, epinion_polls)),
 
   # Calculation of prior
   # tar_target(mcp_deviation, calculate_poll_result_deviation(polls, election_results)),

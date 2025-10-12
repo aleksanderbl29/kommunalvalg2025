@@ -33,15 +33,25 @@ bind_polls <- function(election_dates, verian_polls, gallup_polls, epinion_polls
     ) |>
     filter(!is.na(time_to)) |>
     group_by(poll_date) |>
-    slice_min(as.numeric(time_to, units = "days"),
-              with_ties = FALSE) |>
+    slice_min(as.numeric(time_to, units = "days"), with_ties = FALSE) |>
     ungroup() |>
-    mutate(days_out = as.numeric(time_to, units = "days"),
-           election = gsub("ttl_", "", election))
+    mutate(
+      days_out = as.numeric(time_to, units = "days"),
+      election = sub("^ttl_", "", election)
+    )
+
+  kv_lookup <- x |>
+    select(starts_with("kv")) |>
+    slice_head(n = 1) |>
+    pivot_longer(everything(), names_to = "kv_name", values_to = "kv_date")
 
   x |>
-    left_join(long_min |> select(poll_date, election, days_out),
-              by = "poll_date") |>
+    left_join(
+      long_min |>
+        left_join(kv_lookup, by = c("election" = "kv_name")) |>
+        select(poll_date, election = kv_date, days_out),
+      by = "poll_date"
+    ) |>
     mutate(days_out = as.difftime(days_out, units = "days")) |>
     select(-starts_with(c("ttl", "kv")))
 }
