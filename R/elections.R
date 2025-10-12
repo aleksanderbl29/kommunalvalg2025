@@ -64,7 +64,8 @@ read_election_results <- function(path, election_dates) {
         valg == "KV2017" ~ election_dates$valg_dato[5],
         valg == "KV2021" ~ election_dates$valg_dato[6]
       ),
-      percent = stemmer / total_votes
+      percent = ((stemmer / total_votes) * 100)
     ) |>
-    left_join(parties, by = join_by(party_code)) |> drop_na(percent)
+    left_join(parties, by = join_by(party_code)) |>
+    drop_na(percent)
 }
