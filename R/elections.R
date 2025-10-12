@@ -9,7 +9,7 @@ read_election_dates <- function(path) {
 }
 
 read_election_results <- function(path, election_dates) {
-  read_csv2(path) |>
+  x <- read_csv2(path) |>
     select(
       !ends_with(
         c("Afgivne stemmer", "Andre ugyldige stemmer", "Blanke stemmer")
@@ -42,28 +42,19 @@ read_election_results <- function(path, election_dates) {
       names_to = "valg",
       values_to = "stemmer"
     ) |>
-    separate(col = valg, into = c("valg", "parti"), sep = " - ") |>
+    separate(col = valg, into = c("valg", "party_code"), sep = " - ")
+
+  x |>
+    left_join(
+      x |>
+        filter(party_code == "Gyldige stemmer") |>
+        select(valgsted_id, valg, total_votes = stemmer) |>
+        distinct(),
+      by = c("valgsted_id", "valg")
+    ) |>
+    filter(!party_code %in% c("Stemmeberettigede", "Gyldige stemmer")) |>
     mutate(
       valg = as.factor(valg),
-      partinavn = case_when(
-        parti == "A" ~ "Socialdemokratiet",
-        parti == "B" ~ "Radikale venstre",
-        parti == "C" ~ "Det Konservative Folkeparti",
-        parti == "D" ~ "Nye Borgerlige",
-        parti == "F" ~ "Socialistisk Folkeparti",
-        parti == "G" ~ "Veganerpartiet",
-        parti == "I" ~ "Liberal Alliance",
-        parti == "J" ~ "Junibevægelsen",
-        parti == "K" ~ "Kristendemokraterne",
-        parti == "L" ~ "Lokalliste",
-        parti == "O" ~ "Dansk Folkeparti",
-        parti == "V" ~ "Venstre, Danmarks Liberale Parti",
-        parti == "Æ" ~ "Danmarksdemokraterne - Inger Støjberg",
-        parti == "Ø" ~ "Enhedslisten - De Rød-Grønne",
-        parti == "Å" ~ "Alternativet",
-        parti == "Stemmeberettigede" ~ "Stemmeberettigede",
-        parti == "Gyldige stemmer" ~ "Gyldige stemmer"
-      ),
       date = case_when(
         valg == "KV2001" ~ election_dates$valg_dato[1],
         valg == "KV2005" ~ election_dates$valg_dato[2],
@@ -71,6 +62,8 @@ read_election_results <- function(path, election_dates) {
         valg == "KV2013" ~ election_dates$valg_dato[4],
         valg == "KV2017" ~ election_dates$valg_dato[5],
         valg == "KV2021" ~ election_dates$valg_dato[6]
-      )
-    )
+      ),
+      percent = stemmer / total_votes
+    ) |>
+    left_join(parties, by = join_by(party_code)) |> drop_na(percent)
 }
