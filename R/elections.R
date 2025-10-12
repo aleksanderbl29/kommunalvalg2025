@@ -5,6 +5,7 @@ read_election_dates <- function(path) {
     select(Valgdag, ValgId) |>
     rename(valg_dato = Valgdag, valg_id = ValgId) |>
     mutate(valg_dato = ymd(valg_dato)) |>
+    add_row(valg_dato = date("2025-11-18"), valg_id = 999) |>
     arrange(ymd(valg_dato))
 }
 
@@ -63,7 +64,8 @@ read_election_results <- function(path, election_dates) {
         valg == "KV2017" ~ election_dates$valg_dato[5],
         valg == "KV2021" ~ election_dates$valg_dato[6]
       ),
-      percent = stemmer / total_votes
+      percent = ((stemmer / total_votes) * 100)
     ) |>
-    left_join(parties, by = join_by(party_code)) |> drop_na(percent)
+    left_join(parties, by = join_by(party_code)) |>
+    drop_na(percent)
 }
