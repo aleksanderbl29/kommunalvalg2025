@@ -73,5 +73,17 @@ read_election_results <- function(path, election_dates, mcp_info, parties) {
     drop_na(percent, party_name) |>
     mutate(party_exist = date > party_begin) |>
     filter(party_exist == TRUE) |>
-    select(kommune, kommune_id, storkreds_nr, landsdel_nr, valgsted, valg, date, total_votes, percent, party_code, party_name)
+    select(
+      kommune,
+      kommune_id,
+      storkreds_nr,
+      landsdel_nr,
+      valgsted,
+      valg,
+      date,
+      total_votes,
+      percent,
+      party_code,
+      party_name
+    )
 }

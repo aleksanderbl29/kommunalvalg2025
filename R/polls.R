@@ -1,4 +1,9 @@
-bind_polls <- function(election_dates, verian_polls, gallup_polls, epinion_polls) {
+bind_polls <- function(
+  election_dates,
+  verian_polls,
+  gallup_polls,
+  epinion_polls
+) {
   x <- bind_rows(verian_polls, gallup_polls, epinion_polls) |>
     mutate(
       kv01 = election_dates$valg_dato[1],
@@ -55,4 +60,3 @@ bind_polls <- function(election_dates, verian_polls, gallup_polls, epinion_polls
     mutate(days_out = as.difftime(days_out, units = "days")) |>
     select(-starts_with(c("ttl", "kv")))
 }
-

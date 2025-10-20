@@ -1,4 +1,9 @@
-calc_house_effects <- function(election_results, election_dates, polls, parties) {
+calc_house_effects <- function(
+  election_results,
+  election_dates,
+  polls,
+  parties
+) {
   latest_election <- election_dates |>
     filter(valg_id != 999) |>
     pull(valg_dato) |>
@@ -27,7 +32,6 @@ calc_house_effects <- function(election_results, election_dates, polls, parties)
     ) |>
     ungroup() |>
     left_join(parties |> select(party_code, party_name))
-
 
   valgsted_calc <- election_results |>
     group_by(valgsted, date, party_code) |>

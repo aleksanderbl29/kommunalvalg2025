@@ -16,8 +16,7 @@ get_mcp_info <- function(mcp_geo) {
   mcp_geo |>
     sf::st_drop_geometry() |>
     as_tibble() |>
-    mutate(kommune_id = substr(code, 2, 4),
-           region_id = region_code) |>
+    mutate(kommune_id = substr(code, 2, 4), region_id = region_code) |>
     mutate(across(ends_with("_id"), as.numeric)) |>
     select(kommune_id, kommune = name, region_id, region = region_name)
 }
