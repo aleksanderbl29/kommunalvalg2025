@@ -7,17 +7,11 @@ calc_house_effects <- function(election_results, election_dates, polls) {
   polls_filtered <- polls |>
     filter(poll_date < latest_election)
 
-  # polls |>
-  #   filter(poll_date < latest_election) |>
-  #   left_join(election_results |> select(-party_name), by = join_by(election == date, party_code)) |>
-  #   group_by(party_code, valgsted, ) |>
-  #   mutate(deviation = value - percent) #|>
-  # select(party_name, value, pollster, percent, deviation)
-
   shared_info <- election_results |>
-    select(kommune_id, kommune, storkreds_nr, landsdel_nr, valgsted)
+    select(kommune_id, kommune, storkreds_nr, landsdel_nr, valgsted) |>
+    distinct()
 
-  municipal <- election_results |>
+  municipal_calc <- election_results |>
     group_by(kommune_id, date, party_code) |>
     summarize(
       avg_percent = mean(percent, na.rm = TRUE),
@@ -35,7 +29,7 @@ calc_house_effects <- function(election_results, election_dates, polls) {
     left_join(parties |> select(party_code, party_name))
 
 
-  valgsted <- election_results |>
+  valgsted_calc <- election_results |>
     group_by(valgsted, date, party_code) |>
     summarize(
       avg_percent = mean(percent, na.rm = TRUE),
@@ -53,7 +47,6 @@ calc_house_effects <- function(election_results, election_dates, polls) {
     left_join(parties |> select(party_code, party_name))
 
   shared_info |>
-    left_join(valgsted) |>
-    left_join(municipal) |>
-    distinct()
+    left_join(valgsted_calc, by = join_by(valgsted)) |>
+    left_join(municipal_calc, by = join_by(kommune_id))
 }
