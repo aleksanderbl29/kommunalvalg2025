@@ -37,7 +37,7 @@ list(
   tar_file_read(
     election_results,
     "data/dst/ValgData.csv",
-    read_election_results(!!.x, election_dates, mcp_info)
+    read_election_results(!!.x, election_dates, mcp_info, parties)
   ),
 
   # Valg.dk
@@ -52,6 +52,9 @@ list(
     get_kv_coalitions(kv_election_overview),
     pattern = map(kv_election_overview)
   ),
+
+  # Parties
+  tar_target(parties, get_parties()),
 
   # Polls
   ## Verian
@@ -69,7 +72,7 @@ list(
   tar_group_by(epinion_poll_list, get_epinion_poll_list(), id),
   tar_target(
     epinion_polls,
-    get_epinion_polls(epinion_poll_list),
+    get_epinion_polls(epinion_poll_list, parties),
     pattern = map(epinion_poll_list)
   ),
 
@@ -77,7 +80,7 @@ list(
   tar_target(polls, bind_polls(election_dates, verian_polls, gallup_polls, epinion_polls)),
 
   ## House effects
-  tar_target(house_effects, calc_house_effects(election_results, election_dates, polls))
+  tar_target(house_effects, calc_house_effects(election_results, election_dates, polls, parties))
 
   # Calculation of prior
   # tar_target(mcp_deviation, calculate_poll_result_deviation(polls, election_results)),

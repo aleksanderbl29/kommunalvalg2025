@@ -1,6 +1,7 @@
-parties <- aleksandeR::parties |>
-  dplyr::select(party_code, party_name) |>
-  tibble::add_row(
+get_parties <- function() {
+  aleksandeR::parties |>
+  select(party_code, party_name) |>
+  add_row(
     party_code = c("K", "D", "Q"),
     party_name = c(
       "KristenDemokraterne",
@@ -8,8 +9,8 @@ parties <- aleksandeR::parties |>
       "Frie Grønne, Danmarks Nye Venstrefløjsparti"
     )
   ) |>
-  dplyr::mutate(
-    party_begin = dplyr::case_when(
+  mutate(
+    party_begin = case_when(
       # Date for the beginning of the party
       # "01-01-xxxx" is just the year
       party_code == "A" ~ "01-01-1871",
@@ -29,5 +30,6 @@ parties <- aleksandeR::parties |>
                                         # the name of the party
       party_code == "Q" ~ "07-09-2020",
     ),
-    party_begin = lubridate::dmy(party_begin)
+    party_begin = dmy(party_begin)
   )
+}

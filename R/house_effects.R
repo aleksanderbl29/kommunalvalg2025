@@ -1,4 +1,4 @@
-calc_house_effects <- function(election_results, election_dates, polls) {
+calc_house_effects <- function(election_results, election_dates, polls, parties) {
   latest_election <- election_dates |>
     filter(valg_id != 999) |>
     pull(valg_dato) |>

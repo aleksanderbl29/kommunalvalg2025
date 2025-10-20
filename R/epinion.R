@@ -12,6 +12,7 @@ get_epinion_poll_list <- function(
 
 get_epinion_polls <- function(
   poll_list,
+  parties,
   base_url = "https://www.dr.dk/nyheder/politik/meningsmaalinger/api/opinionPollData"
 ) {
   id <- poll_list |> pull(id)

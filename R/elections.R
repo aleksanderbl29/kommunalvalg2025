@@ -9,7 +9,7 @@ read_election_dates <- function(path) {
     arrange(ymd(valg_dato))
 }
 
-read_election_results <- function(path, election_dates, mcp_info) {
+read_election_results <- function(path, election_dates, mcp_info, parties) {
   x <- read_csv2(path) |>
     select(
       !ends_with(
