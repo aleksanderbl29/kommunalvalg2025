@@ -5,7 +5,7 @@ read_election_dates <- function(path) {
     select(Valgdag, ValgId) |>
     rename(valg_dato = Valgdag, valg_id = ValgId) |>
     mutate(valg_dato = ymd(valg_dato)) |>
-    add_row(valg_dato = date("2025-11-18"), valg_id = 999) |>
+    add_row(valg_dato = ymd("2025-11-18"), valg_id = 999) |>
     arrange(ymd(valg_dato))
 }
 
