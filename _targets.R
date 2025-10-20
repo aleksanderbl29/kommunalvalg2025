@@ -27,6 +27,7 @@ list(
   # Municipality level data
   tar_target(mcp_geo, get_mcp_geo(this_week)),
   tar_target(mcp_pop, get_mcp_pop(this_week)),
+  tar_target(mcp_info, get_mcp_info(mcp_geo)),
   tar_target(mcp_accounts, get_mcp_accounts(this_week)),
   tar_target(mcp_daycare_pricing, get_mcp_daycare_pricing(this_week)),
   tar_target(turnout_pct, get_turnout_pct(this_week)),
@@ -36,7 +37,7 @@ list(
   tar_file_read(
     election_results,
     "data/dst/ValgData.csv",
-    read_election_results(!!.x, election_dates)
+    read_election_results(!!.x, election_dates, mcp_info)
   ),
 
   # Valg.dk

@@ -12,6 +12,16 @@ get_mcp_geo <- function(date) {
   geodk::municipalities()
 }
 
+get_mcp_info <- function(mcp_geo) {
+  mcp_geo |>
+    sf::st_drop_geometry() |>
+    as_tibble() |>
+    mutate(kommune_id = substr(code, 2, 4),
+           region_id = region_code) |>
+    mutate(across(ends_with("_id"), as.numeric)) |>
+    select(kommune_id, kommune = name, region_id, region = region_name)
+}
+
 get_mcp_pop <- function(date) {
   # bulk_get_dst_table("FOLK1AM") |>
   bulk_get_dst_table("FOLK1D") |>

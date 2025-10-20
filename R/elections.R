@@ -9,7 +9,7 @@ read_election_dates <- function(path) {
     arrange(ymd(valg_dato))
 }
 
-read_election_results <- function(path, election_dates) {
+read_election_results <- function(path, election_dates, mcp_info) {
   x <- read_csv2(path) |>
     select(
       !ends_with(
@@ -64,8 +64,14 @@ read_election_results <- function(path, election_dates) {
         valg == "KV2017" ~ election_dates$valg_dato[5],
         valg == "KV2021" ~ election_dates$valg_dato[6]
       ),
-      percent = ((stemmer / total_votes) * 100)
+      percent = ((stemmer / total_votes) * 100),
+      valgsted = gruppe,
+      kommune_id = as.numeric(substr(valgsted_id, 1, 3))
     ) |>
     left_join(parties, by = join_by(party_code)) |>
-    drop_na(percent)
+    left_join(mcp_info, by = join_by(kommune_id)) |>
+    drop_na(percent, party_name) |>
+    mutate(party_exist = date > party_begin) |>
+    filter(party_exist == TRUE) |>
+    select(kommune, kommune_id, storkreds_nr, landsdel_nr, valgsted, valg, date, total_votes, percent, party_code, party_name)
 }
