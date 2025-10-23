@@ -644,14 +644,13 @@ epinion_polls_08a412263d353492|branch|a9defcf9d4a2f110|467909873e78d78d|314e29b5
 epinion_polls_4dfd94eac0228091|branch|13708a2cf19310cb|467909873e78d78d|314e29b590094d1b|-14777672||t20381.7186403109s|s851b|851|qs|local|vector|epinion_polls||0.529||
 epinion_polls_8764ccaf61b35c81|branch|9309329db5417c92|467909873e78d78d|314e29b590094d1b|1427162513||t20381.7186441117s|s833b|833|qs|local|vector|epinion_polls||0.978||
 election_results|stem|dbea7b985c046d84|2cb26d812192a24d|2c18c99d65cec367|527337757||t20381.7190493932s|s524837b|524837|qs|local|vector|||2.239|One or more parsing issues, call `problems()` on your data frame for details, e.g.:   dat <- vroom(...)   problems(dat). There were 154 warnings in `mutate()`. The first warning was: ℹ In argument: `across(!c('valgsted_id'), as.double)`. Caused by warning: ! NAs introduced by coercion ℹ Run `dplyr::last_dplyr_warnings()` to see the 153 remaining warnings.|
-house_effects|stem|a856ccfa28d8b0d2|c938677f1bdef3c7|7a52a8427051b3af|-1244625121||t20381.7193829646s|s6281360b|6281360|qs|local|vector|||5.253|Detected an unexpected many-to-many relationship between `x` and `y`. ℹ Row 1 of `x` matches multiple rows in `y`. ℹ Row 2261 of `y` matches multiple rows in `x`. ℹ If a many-to-many relationship is expected, set `relationship =   'many-to-many'` to silence this warning.. Detected an unexpected many-to-many relationship between `x` and `y`. ℹ Row 1 of `x` matches multiple rows in `y`. ℹ Row 2261 of `y` matches multiple rows in `x`. ℹ If a many-to-many relationship is expected, set `relationship =   'many-to-many'` to silence this warning.. Detected an unexpected many-to-many relationship between `x` and `y`. ℹ Row 1 of `x` matches multiple rows in `y`. ℹ Row 1 of `y` matches multiple rows in `x`. ℹ If a many-to-many relationship is expected, set `relationship =   'many-to-many'` to silence this warning.|
 get_hist_results|function|f4b2048d93b0f4a8
-.Random.seed|object|5a884149dad563d0
+.Random.seed|object|c8d19d077dcf5bb6
 get_epinion_poll_list|function|78cce78de493ad82
 bulk_get_dst_table|function|3a71b700973a5f0a
 dst_areas_filter|object|3ca180c6b7318285
 api_sleep_time|object|4c24ace52f56fa79
-calc_house_effects|function|ee5e0d6b00abf9a7
+calc_house_effects|function|a79eb01d304d6c39
 bind_polls|function|103d0689ea3ac18e
 get_mcp_daycare_pricing|function|f742134da2cb521f
 tar_view|function|b54f270ef20e7ddf
@@ -671,3 +670,4 @@ get_kv_coalitions|function|e8adbec5dea72e3b
 get_kv_election_overview|function|aab614ddaf84f5ac
 read_gallup_excel|function|156b45ceb18e4fc4
 read_verian_excel|function|d6d5c57e80c2be69
+house_effects|stem|2ea389f9473893d8|c938677f1bdef3c7|a6b02257ecc1ac02|-1244625121||t20384.5209046166s|s1067260b|1067260|qs|local|vector|||3.591|Detected an unexpected many-to-many relationship between `x` and `y`. ℹ Row 1 of `x` matches multiple rows in `y`. ℹ Row 2261 of `y` matches multiple rows in `x`. ℹ If a many-to-many relationship is expected, set `relationship =   'many-to-many'` to silence this warning.. Detected an unexpected many-to-many relationship between `x` and `y`. ℹ Row 1 of `x` matches multiple rows in `y`. ℹ Row 2261 of `y` matches multiple rows in `x`. ℹ If a many-to-many relationship is expected, set `relationship =   'many-to-many'` to silence this warning.|
