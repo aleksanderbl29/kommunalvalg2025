@@ -2,7 +2,9 @@ kv_request_headers <- list(
   "X-Election-ID" = "1705ff7b-7390-48d8-b701-6bcd430dc835",
   "Cookie" = paste0(
     "NSC_mc_wt_wbm_qspe=",
-    paste0(sample(c(0:9, letters[1:6]), 32, replace = TRUE), collapse = "")
+    "0dde57ead4f0f501e1df555e53be196b"
+    # this random string was generated with:
+    # paste0(sample(c(0:9, letters[1:6]), 32, replace = TRUE), collapse = "")
   )
 )
 
