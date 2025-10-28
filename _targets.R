@@ -28,6 +28,22 @@ tar_source()
 
 list(
   tar_target(this_week, week(today("CET"))),
+  tar_target(run_date, today()),
+  tar_target(election_day, ymd("2024-11-05")),
+
+  # Set options for runtime and estimation
+  tar_target(n_chains, 4),
+  tar_target(n_cores, getOption("mc.cores")),
+  tar_target(n_warmup, 1000),
+  tar_target(n_iter, 3500),
+  tar_target(n_sampling, n_iter * 0.1),
+  tar_target(n_refresh, n_sampling * 0.1),
+  tar_target(sigma_measure_noise_national, 0.05),
+  tar_target(sigma_measure_noise_state, 0.05),
+  tar_target(sigma_c, 0.06),
+  tar_target(sigma_m, 0.04),
+  tar_target(sigma_pop, 0.04),
+  tar_target(sigma_e_bias, 0.02),
 
   # Municipality level data
   tar_target(mcp_geo, get_mcp_geo(this_week)),
@@ -120,4 +136,8 @@ list(
     )
   ),
 
+  # Calculate prior
+  tar_target(prior_model, fit_prior_model(mcp_hist_results)),
+  tar_target(prior, predict_priors(prior_model, mcp_hist_results))
+  # tar_target(mu_b_prior, get_mu_b_prior(house_effects))
 )
