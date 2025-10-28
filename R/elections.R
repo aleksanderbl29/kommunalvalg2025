@@ -9,7 +9,12 @@ read_election_dates <- function(path) {
     arrange(ymd(valg_dato))
 }
 
-read_election_results <- function(path, election_dates, mcp_info, parties) {
+read_election_results <- function(
+  path,
+  election_dates,
+  mcp_info,
+  parties
+) {
   x <- read_csv2(path) |>
     select(
       !ends_with(
@@ -23,7 +28,6 @@ read_election_results <- function(path, election_dates, mcp_info, parties) {
       storkreds_nr = StorKredsNr,
       landsdel_nr = LandsdelsNr
     ) |>
-    # naniar::replace_with_na_all(condition = ~.x == "-") |>
     mutate(across(!c("valgsted_id"), ~ str_replace_all(., ",", "."))) |>
     mutate(across(!c("valgsted_id"), as.double)) |>
     select(
@@ -82,6 +86,7 @@ read_election_results <- function(path, election_dates, mcp_info, parties) {
       valg,
       date,
       total_votes,
+      votes = stemmer,
       percent,
       party_code,
       party_name
