@@ -53,6 +53,8 @@ list(
     pattern = map(kv_election_overview)
   ),
 
+  tar_target(mcp_hist_results, get_mcp_hist_results(election_results)),
+
   # Parties
   tar_target(parties, get_parties()),
 
