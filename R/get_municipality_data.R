@@ -9,16 +9,29 @@ dst_areas_filter <- c(
 )
 
 get_mcp_geo <- function(date) {
-  geodk::municipalities()
+  df <- geodk::municipalities() |>
+    select(-region_code)
+
+  if (n_distinct(df$region_name) == 5) {
+    df |>
+      mutate(
+        region_name = case_when(
+          region_name == "Region Hovedstaden" ~ "Region Østdanmark",
+          region_name == "Region Sjælland" ~ "Region Østdanmark",
+          .default = region_name
+        )
+      )
+  } else if (n_distinct(df$region_name) == 4) {
+    df
+  }
 }
 
 get_mcp_info <- function(mcp_geo) {
   mcp_geo |>
-    sf::st_drop_geometry() |>
-    as_tibble() |>
-    mutate(kommune_id = substr(code, 2, 4), region_id = region_code) |>
+    st_tibble() |>
+    mutate(kommune_id = substr(code, 2, 4)) |>
     mutate(across(ends_with("_id"), as.numeric)) |>
-    select(kommune_id, kommune = name, region_id, region = region_name)
+    select(kommune_id, kommune = name, region = region_name)
 }
 
 get_mcp_pop <- function(date) {

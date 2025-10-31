@@ -21,7 +21,10 @@ get_kv_election_overview <- function(
     mutate(lastUpdate = as_datetime(lastUpdate))
 }
 
-get_kv_data_csv <- function(municipality_id) {
+get_kv_data_csv <- function(
+  municipality_id,
+  election_id = "kv2025"
+) {
   base_url <- "https://valg.dk/api/export-data/export-kv-data-csv"
   election_id <- "1705ff7b-7390-48d8-b701-6bcd430dc835"
 
@@ -39,7 +42,11 @@ get_kv_data_csv <- function(municipality_id) {
     req_perform() |>
     resp_body_string() |>
     read_csv2(col_types = cols("c", "c", "c", "c", "d")) |>
-    janitor::clean_names()
+    janitor::clean_names() |>
+    mutate(
+      municipality = municipality_id |> pull(name),
+      last_pull = now()
+    )
 
   Sys.sleep(api_sleep_time)
 
@@ -69,4 +76,21 @@ get_kv_coalitions <- function(municipality_id) {
   Sys.sleep(api_sleep_time)
 
   return(list(municipality_name = response$countStatusDto$name, coalitions = x))
+}
+
+get_kv_election_ids <- function() {
+  url <- paste0(
+    "https://valg.dk/api/election" #,
+    # municipality_id |> pull(id)
+  )
+
+  request(url) |>
+    req_headers(!!!list("Cookie" = kv_request_headers$Cookie)) |>
+    req_perform() |>
+    resp_body_string() |>
+    jsonlite::fromJSON() |>
+    _$municipalElections |>
+    as_tibble() |>
+    mutate(electionDate = ymd(electionDate)) |>
+    arrange(desc(electionDate))
 }
