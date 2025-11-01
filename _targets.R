@@ -20,7 +20,7 @@ tar_option_set(
   format = "qs",
   seed = 42,
   controller = crew::crew_controller_local(
-    workers = (parallel::detectCores() - 1),
+    workers = parallel::detectCores(),
     seconds_idle = 60
   )
 )

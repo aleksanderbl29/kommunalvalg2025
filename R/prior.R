@@ -20,7 +20,7 @@ fit_prior_model <- function(mcp_hist_results) {
   model <- brm(
     mvbind(a, b, c, f, o, v, k, i, o_2, d, a_2, q) ~ t + kommune,
     data = votes,
-    cores = parallel::detectCores() - 1,
+    cores = parallel::detectCores(),
     chains = 6,
     iter = 7500,
     backend = "cmdstanr",
