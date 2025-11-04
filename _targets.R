@@ -15,7 +15,9 @@ tar_option_set(
     "httr2",
     "tibble",
     "sf",
-    "brms"
+    "brms",
+    "tidybayes",
+    "ggdist"
   ),
   format = "qs",
   seed = 42,
@@ -138,6 +140,8 @@ list(
 
   # Calculate prior
   tar_target(prior_model, fit_prior_model(mcp_hist_results)),
-  tar_target(prior, predict_priors(prior_model, mcp_hist_results))
+  tar_target(prior, predict_priors(prior_model, mcp_hist_results)),
+  tar_target(prior_draws, draw_from_prior_model(prior_model)),
+
   # tar_target(mu_b_prior, get_mu_b_prior(house_effects))
 )
