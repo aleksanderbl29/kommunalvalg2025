@@ -143,5 +143,12 @@ list(
   tar_target(prior, predict_priors(prior_model, mcp_hist_results)),
   tar_target(prior_draws, draw_from_prior_model(prior_model)),
 
+  # Run model
+  tar_target(model, run_model(prior_draws, polls, election_day)),
+  tar_target(
+    hierarchical_model,
+    run_hierarchical_model(polls, election_day, election_results)
+  )
+
   # tar_target(mu_b_prior, get_mu_b_prior(house_effects))
 )
