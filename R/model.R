@@ -190,8 +190,96 @@ run_hierarchical_model <- function(polls, election_day, election_results) {
   return(fit)
 }
 
+run_another_model <- function(polls, election_day) {
+  new_polls <- polls |>
+    distinct() |>
+    filter(election == election_day) |>
+    mutate(poll_value = as.numeric(value)) |>
+    select(party_code, poll_date, poll_value, segment, pollster) |>
+    distinct() |>
+    pivot_wider(
+      names_from = party_code,
+      values_from = poll_value,
+      values_fill = 0
+    ) |>
+    janitor::clean_names() |>
+    replace_na(list(h = 0)) |>
+    mutate(days_out = poll_date - election_day, area = "nationwide") |>
+    arrange(days_out) %>%
+    mutate(across(
+      c(a, b, c, f, o, v, k, i, o_2, d, a_2, q, h, m, ae, g),
+      ~ ifelse(. == 0, 0.01, .)
+    )) %>%
+    mutate(
+      row_sum = a +
+        b +
+        c +
+        f +
+        o +
+        v +
+        k +
+        i +
+        o_2 +
+        d +
+        a_2 +
+        q +
+        h +
+        m +
+        ae +
+        g,
+      across(
+        c(a, b, c, f, o, v, k, i, o_2, d, a_2, q, h, m, ae, g),
+        ~ . / row_sum
+      ),
+      days_out = as.numeric(days_out) |> abs()
+    ) |>
+    select(-row_sum)
 
-#   ggplot() +
-#   geom_sf()
-#
-# x_plot + y_plot / l_plot
+  # Define the model using bf() for each response
+  formula <- bf(a ~ pollster + segment) +
+    bf(b ~ pollster + segment) +
+    bf(c ~ pollster + segment) +
+    bf(f ~ pollster + segment) +
+    bf(o ~ pollster + segment) +
+    bf(v ~ pollster + segment) +
+    bf(k ~ pollster + segment) +
+    bf(i ~ pollster + segment) +
+    bf(o_2 ~ pollster + segment) +
+    bf(d ~ pollster + segment) +
+    bf(a_2 ~ pollster + segment) +
+    bf(q ~ pollster + segment) +
+    bf(h ~ pollster + segment) +
+    bf(m ~ pollster + segment) +
+    bf(ae ~ pollster + segment) +
+    bf(g ~ pollster + segment) +
+    set_rescor(TRUE)
+
+  # Now set priors for each response
+  priors <- c(
+    # Intercept for each party
+    prior(normal(28, 13), class = "Intercept", resp = "a"),
+    prior(normal(4.09, 3.93), class = "Intercept", resp = "b"),
+    prior(normal(12.8, 19.2), class = "Intercept", resp = "c"),
+    prior(normal(2.82, 0.235), class = "Intercept", resp = "d"),
+    prior(normal(6.28, 5.8), class = "Intercept", resp = "f"),
+    prior(normal(2.5, 1.08), class = "Intercept", resp = "i"),
+    prior(normal(0.644, 2.39), class = "Intercept", resp = "k"),
+    prior(normal(8.16, 4.88), class = "Intercept", resp = "o"),
+    prior(normal(0.107, 0.102), class = "Intercept", resp = "q"),
+    prior(normal(23.3, 18.7), class = "Intercept", resp = "v"),
+    prior(lkj(2), class = "rescor")
+  )
+
+  # Fit the model
+  fit <- brm(
+    formula,
+    data = new_polls,
+    prior = priors,
+    # family = dirichlet(),
+    chains = 4,
+    iter = 2000,
+    cores = 4
+  )
+
+  return(fit)
+}

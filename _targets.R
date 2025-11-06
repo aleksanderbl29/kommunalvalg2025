@@ -148,7 +148,8 @@ list(
   tar_target(
     hierarchical_model,
     run_hierarchical_model(polls, election_day, election_results)
-  )
+  ),
+  tar_target(another_model, run_another_model(polls, election_day))
 
   # tar_target(mu_b_prior, get_mu_b_prior(house_effects))
 )
