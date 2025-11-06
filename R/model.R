@@ -16,22 +16,99 @@ run_model <- function(prior_draws, polls, election_day) {
     janitor::clean_names() |>
     replace_na(list(h = 0)) |>
     mutate(days_out = poll_date - election_day, area = "nationwide") |>
-    arrange(days_out)
+    arrange(days_out) %>%
+    mutate(across(
+      c(a, b, c, f, o, v, k, i, o_2, d, a_2, q, h, m, ae, g),
+      ~ ifelse(. == 0, 0.01, .)
+    )) %>%
+    mutate(
+      row_sum = a +
+        b +
+        c +
+        f +
+        o +
+        v +
+        k +
+        i +
+        o_2 +
+        d +
+        a_2 +
+        q +
+        h +
+        m +
+        ae +
+        g,
+      across(
+        c(a, b, c, f, o, v, k, i, o_2, d, a_2, q, h, m, ae, g),
+        ~ . / row_sum
+      ),
+      days_out = as.numeric(days_out)
+    ) %>%
+    select(-row_sum)
 
-  brm(
-    formula = mvbind(a, b, c, f, o, v, k, i, o_2, d, a_2, q) ~ days_out +
-      (1 | area) +
-      (1 | segment),
+  # brm(
+  #   formula = cbind(
+  #     a,
+  #     b,
+  #     c,
+  #     f,
+  #     o,
+  #     v,
+  #     k,
+  #     i,
+  #     o_2,
+  #     d,
+  #     a_2,
+  #     q,
+  #     h,
+  #     m,
+  #     ae,
+  #     g
+  #   ) ~ days_out +
+  #     # (1 | area) +
+  #     (1 | pollster) +
+  #     (1 | segment),
+  #   data = new_polls,
+  #   family = dirichlet(),
+  #   # prior = ,
+  #   # cores = parallel::detectCores()
+  #   # iter = 7500,
+  #   cores = 4,
+  #   iter = 3500,
+  #   chains = 4,
+  #   backend = "cmdstanr",
+  #   refresh = 75
+  # )
+
+  fit <- brm(
+    cbind(a, b, c, f, o, v, k, i, o_2, d, a_2, q, h, m, ae, g) ~ 1, #+
+    # (1 | segment),
     data = new_polls,
-    # prior = ,
-    # cores = parallel::detectCores()
-    # iter = 7500,
+    family = dirichlet(),
+    # prior = prior(constant(1), class = "phi"), # Keep precision fixed
     cores = 4,
-    iter = 3500,
     chains = 4,
-    backend = "cmdstanr",
-    refresh = 75
+    backend = "cmdstanr"
+  ) #|>
+  # add_criterion("loo", weights = new_polls$poll_weight)
+
+  # Predict vote shares for each segment
+  pred <- predict(
+    fit,
+    newdata = expand.grid(segment = unique(new_polls$segment))
   )
+
+  # Or get posterior draws for overall average (most recent polls weighted most)
+  post <- as_draws_df(fit)
+
+  # Extract party vote shares on probability scale
+  fit %>%
+    epred_draws(
+      newdata = data.frame(
+        segment = c("all", "men", "women", "young", "doubts")
+      )
+    ) %>%
+    median_qi()
 }
 
 run_hierarchical_model <- function(polls, election_day, election_results) {
