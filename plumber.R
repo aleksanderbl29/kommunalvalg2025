@@ -27,7 +27,7 @@ function() {
 #* @get /pipeline/tar-make
 #*
 function() {
-  tar_make()
+  targets::tar_make()
 }
 
 #* Echo back the input
