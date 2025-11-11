@@ -30,6 +30,14 @@ function() {
   targets::tar_make()
 }
 
+#* Get polls
+#*
+#* @get /pipeline/polls
+#*
+function() {
+  tar_read(polls)
+}
+
 #* Echo back the input
 #* @param msg The message to echo
 #* @get /echo
