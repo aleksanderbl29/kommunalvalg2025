@@ -1,13 +1,13 @@
-#* Welcome to the api
-#*
-#* Simple welcome message when arriving at the root path
-#*
-#* @get /
-#* @serializer json
-#*
-function() {
-  list(msg = "Velkommen til Aleksanders kommunalvalg 2025 analyse API")
-}
+# #* Welcome to the api
+# #*
+# #* Simple welcome message when arriving at the root path
+# #*
+# #* @get /
+# #* @serializer json
+# #*
+# function() {
+#   list(msg = "Velkommen til Aleksanders kommunalvalg 2025 analyse API")
+# }
 
 #* Welcome to the api
 #*
