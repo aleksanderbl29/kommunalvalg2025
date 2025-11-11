@@ -2,36 +2,31 @@
 #*
 #* This function updates the pipeline with the latest data.
 #*
-#* @post /pipeline/tar-make
+#* @get /pipeline/tar-make
 #*
 function() {
   tar_make()
 }
 
-#* Plot out data from the palmer penguins dataset
-#*
-#* @get /plot
-#*
-#* @query spec:string If provided, filter the data to only this species
-#* (e.g. 'Adelie')
-#*
+#* Echo back the input
+#* @param msg The message to echo
+#* @get /echo
+function(msg = "") {
+  list(msg = paste0("The message is: '", msg, "'"))
+}
+
+#* Plot a histogram
 #* @serializer png
-#*
-function(query) {
-  myData <- penguins
-  title <- "All Species"
+#* @get /plot
+function() {
+  rand <- rnorm(100)
+  hist(rand)
+}
 
-  # Filter if the species was specified
-  if (!is.null(query$spec)) {
-    title <- paste0("Only the '", query$spec, "' Species")
-    myData <- subset(myData, species == query$spec)
-  }
-
-  plot(
-    myData$flipper_len,
-    myData$bill_len,
-    main = title,
-    xlab = "Flipper Length (mm)",
-    ylab = "Bill Length (mm)"
-  )
+#* Return the sum of two numbers
+#* @param a The first number to add
+#* @param b The second number to add
+#* @post /sum
+function(a, b) {
+  as.numeric(a) + as.numeric(b)
 }
