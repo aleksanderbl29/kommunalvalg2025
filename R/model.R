@@ -160,12 +160,12 @@ run_hierarchical_model <- function(polls, election_day, election_results) {
   #
   # election_results
   #
-  prior_draws |>
-    group_by(party) |>
-    summarise(
-      mean = mean(pred + r_effect),
-      sd = sd(pred + r_effect)
-    )
+  # prior_draws |>
+  #   group_by(party) |>
+  #   summarise(
+  #     mean = mean(pred + r_effect),
+  #     sd = sd(pred + r_effect)
+  #   )
 
   priors <- c(
     # prior(normal(28, 13), class = "Intercept", resp = "a")
@@ -235,24 +235,12 @@ run_another_model <- function(polls, election_day) {
     ) |>
     select(-row_sum)
 
-  # Define the model using bf() for each response
-  formula <- bf(a ~ pollster + segment) +
-    bf(b ~ pollster + segment) +
-    bf(c ~ pollster + segment) +
-    bf(f ~ pollster + segment) +
-    bf(o ~ pollster + segment) +
-    bf(v ~ pollster + segment) +
-    bf(k ~ pollster + segment) +
-    bf(i ~ pollster + segment) +
-    bf(o_2 ~ pollster + segment) +
-    bf(d ~ pollster + segment) +
-    bf(a_2 ~ pollster + segment) +
-    bf(q ~ pollster + segment) +
-    bf(h ~ pollster + segment) +
-    bf(m ~ pollster + segment) +
-    bf(ae ~ pollster + segment) +
-    bf(g ~ pollster + segment) +
-    set_rescor(TRUE)
+  # Define the model using dirichlet
+  formula <- bf(
+    cbind(a, b, c, f, v, k, i, o_2, d, a_2, q, h, m, ae, g, o) ~
+      pollster + segment
+  ) +
+    dirichlet()
 
   # Now set priors for each response
   priors <- c(
@@ -275,11 +263,89 @@ run_another_model <- function(polls, election_day) {
     formula,
     data = new_polls,
     prior = priors,
-    # family = dirichlet(),
-    chains = 4,
-    iter = 2000,
-    cores = 4
+    chains = 6,
+    iter = 7500,
+    cores = 6
   )
 
   return(fit)
+}
+
+get_another_model_posterior <- function(another_model) {
+  variables <- another_model |>
+    get_variables()
+
+  draws <- another_model |>
+    spread_draws(
+      b_a_Intercept,
+      b_a_pollsterVerian,
+      b_b_Intercept,
+      b_b_pollsterVerian,
+      b_c_Intercept,
+      b_c_pollsterVerian,
+      b_f_Intercept,
+      b_f_pollsterVerian,
+      b_o_Intercept,
+      b_o_pollsterVerian,
+      b_v_Intercept,
+      b_v_pollsterVerian,
+      b_k_Intercept,
+      b_k_pollsterVerian,
+      b_i_Intercept,
+      b_i_pollsterVerian,
+      b_o2_Intercept,
+      b_o2_pollsterVerian,
+      b_d_Intercept,
+      b_d_pollsterVerian,
+      b_a2_Intercept,
+      b_a2_pollsterVerian,
+      b_q_Intercept,
+      b_q_pollsterVerian,
+      b_h_Intercept,
+      b_h_pollsterVerian,
+      b_m_Intercept,
+      b_m_pollsterVerian,
+      b_ae_Intercept,
+      b_ae_pollsterVerian,
+      b_g_Intercept,
+      b_g_pollsterVerian
+    ) |>
+    mutate(
+      # Reference segment (all), reference pollster (Epinion)
+      a_ref = b_a_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+      b_ref = b_b_Intercept,
+
+      # Reference segment (all), Verian pollster
+      a_verian = b_a_Intercept + b_a_pollsterVerian,
+      b_verian = b_b_Intercept + b_b_pollsterVerian,
+      # ... etc
+
+      # Reference segment (all), averaged across pollsters (50/50 weight)
+      a_avg = b_a_Intercept + 0.5 * b_a_pollsterVerian,
+      b_avg = b_b_Intercept + 0.5 * b_b_pollsterVerian,
+      # ... etc for all parties
+    )
+
+  draws_long <- another_model |>
+    gather_draws(`b_.+_Intercept|b_.+_pollsterVerian`, regex = TRUE) |>
+    separate(.variable, into = c("type", "party", "param"), sep = "_") |>
+    pivot_wider(names_from = param, values_from = .value) |>
+    mutate(
+      ref_pollster = Intercept, # Reference segment & pollster
+      verian_pollster = Intercept + pollsterVerian, # Reference segment & Verian
+      avg_pollster = Intercept + 0.5 * pollsterVerian # Reference segment, avg pollster
+    )
+  draws_long |>
+    group_by(party) |>
+    summarise(
+      mean(avg_pollster),
+      sd(avg_pollster)
+    )
 }
