@@ -25,6 +25,16 @@ tar_option_set(
     workers = parallel::detectCores(),
     seconds_idle = 60
   )
+  repository = "aws",
+  repository_meta = "aws",
+  resources = tar_resources(
+    aws = tar_resources_aws(
+      bucket = "kommunalvalg-2025-tyjhq",
+      prefix = "targets",
+      region = "weur",
+      endpoint = "https://f6d1d15e6f0b37b4b8fcad3c41a7922d.r2.cloudflarestorage.com"
+    )
+  )
 )
 tar_source()
 
@@ -49,7 +59,7 @@ list(
 
   # Municipality level data
   tar_target(mcp_geo, get_mcp_geo(this_week)),
-  tar_target(mcp_pop, get_mcp_pop(this_week)),
+  # tar_target(mcp_pop, get_mcp_pop(this_week)),
   tar_target(mcp_info, get_mcp_info(mcp_geo)),
   tar_target(mcp_accounts, get_mcp_accounts(this_week)),
   tar_target(mcp_daycare_pricing, get_mcp_daycare_pricing(this_week)),

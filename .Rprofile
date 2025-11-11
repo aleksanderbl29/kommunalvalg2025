@@ -6,6 +6,8 @@ if (interactive()) {
 
 library(targets)
 library(tarchetypes)
+# library(plumber2)
+library(plumber)
 
 tar_view <- function(target) {
   targets::tar_read_raw(target) |>
